@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  home:
+    image: octopico.azurecr.io/home:latest
+    build:
+      context: ./app
+    ports:
+      - "5001:5001"
+  nginx:
+    image: octopico.azurecr.io/nginx:latest
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
