@@ -1,13 +1,15 @@
 version: "3.8"
 services:
   home:
-    image: octopico.azurecr.io/home:latest
+    container_name: octopico-home
+    image: draganfill/octopico-home:latest
     build:
       context: ./app
     ports:
       - "5001:5001"
   nginx:
-    image: octopico.azurecr.io/nginx:latest
+    container_name: octopico-nginx
+    image: draganfill/octopico-nginx:latest
     restart: always
     build:
       context: ./nginx

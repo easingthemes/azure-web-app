@@ -1,0 +1,21 @@
+{
+  "name": "azure-web-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:images:home": "docker compose --project-directory ./home build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easingthemes/azure-web-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/easingthemes/azure-web-app/issues"
+  },
+  "homepage": "https://github.com/easingthemes/azure-web-app#readme"
+}
