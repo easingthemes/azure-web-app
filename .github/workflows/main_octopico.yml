@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - octopico
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to registry
+      uses: docker/login-action@v1
+      with:
+        registry: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_5dc7f8c010534793a64d416aaa00fa02 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_c7e05f83cd3140fcb461447f3a2711a0 }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5dc7f8c010534793a64d416aaa00fa02 }}/octopico:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'octopico'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_832917aa3fdc4131bfe00fe4765e3621 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5dc7f8c010534793a64d416aaa00fa02 }}/octopico:${{ github.sha }}'
